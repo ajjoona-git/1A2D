@@ -24,6 +24,42 @@ dr = [-1, 1, 0, 0]
 dc = [0, 0, -1, 1]
 
 
+def gravity(arr):
+    """중력이 작용해 빈 공간이 없어진 벽돌 상태를 반환한다."""
+    # 각 열을 순회하면서
+    for c in range(W):
+        # 벽돌을 담을 큐 (선입선출)
+        q = deque()
+        for r in range(H - 1, -1, -1):
+            # 벽돌이면 큐에 담고 0으로 초기화
+            if arr[r][c] > 0:
+                q.append(arr[r][c])
+                arr[r][c] = 0
+        # 밑(H-1)에서부터 벽돌을 쌓는다
+        for idx in range(1, len(q) + 1):
+            arr[H - idx][c] = q.popleft()
+
+
+def bfs(r, c, arr, blocks):
+    """한 번 구슬을 쏘았을 때 벽돌이 연쇄적으로 깨진 후 남은 벽돌의 수를 반환한다."""
+    q = deque([(r, c, arr[r][c])])
+    arr[r][c] = 0
+    curr_blocks = blocks - 1
+
+    while q:
+        r, c, power = q.popleft()
+
+        for p in range(1, power):
+            for i in range(4):
+                nr, nc = r + dr[i] * p, c + dc[i] * p
+                if 0 <= nr < H and 0 <= nc < W and arr[nr][nc] > 0:
+                    q.append((nr, nc, arr[nr][nc]))
+                    arr[nr][nc] = 0
+                    curr_blocks -= 1
+
+    return curr_blocks
+
+
 def shoot(count, blocks, now_grid):
     """count 수만큼 구슬을 쏘고 남은 벽돌의 수를 계산하여 최소 벽돌을 갱신한다."""
     global min_blocks
@@ -47,31 +83,8 @@ def shoot(count, blocks, now_grid):
         if r == -1:
             continue
 
-        # 벽돌 깨기
-        q = deque([(r, c, copy_grid[r][c])])
-        copy_grid[r][c] = 0
-        curr_blocks = blocks - 1
-
-        while q:
-            r, c, power = q.popleft()
-
-            for p in range(1, power):
-                for i in range(4):
-                    nr, nc = r + dr[i] * p, c + dc[i] * p
-                    if 0 <= nr < H and 0 <= nc < W and copy_grid[nr][nc] > 0:
-                        q.append((nr, nc, copy_grid[nr][nc]))
-                        copy_grid[nr][nc] = 0
-                        curr_blocks -= 1
-
-        # 빈 공간 채우기
-        for i in range(W):
-            blank = H - 1
-            for j in range(H - 1, -1, -1):
-                # swap
-                if copy_grid[j][i] > 0:
-                    copy_grid[j][i], copy_grid[blank][i] = copy_grid[blank][i], copy_grid[j][i]
-                    blank -= 1
-
+        curr_blocks = bfs(r, c, copy_grid, blocks)
+        gravity(copy_grid)
         shoot(count + 1, curr_blocks, copy_grid)
 
 
