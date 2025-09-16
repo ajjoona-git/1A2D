@@ -1,46 +1,53 @@
 # 5249. 최소 신장 트리
-# prim - 정점 중심
-import heapq
+# kruskal - 간선 중심
 
-def prim(num_v, start):
-    """start를 시작 정점으로 최소 신장 트리의 가중치 합을 구한다."""
-    visited = [False] * num_v  # 0 ~ V번 노드의 방문 여부
+def find_set(parents, x):
+    """x를 포함하는 집합의 대표자를 반환한다."""
+    if parents[x] != x:
+        parents[x] = find_set(parents, parents[x])
+    return parents[x]
+
+
+def union(parents, x, y):
+    """두 원소 x, y를 같은 집합으로 합친다."""
+    root_x = find_set(parents, x)
+    root_y = find_set(parents, y)
+    if root_x < root_y:
+        parents[root_y] = root_x
+    else:
+        parents[root_x] = root_y
+
+
+def kruskal(num_v):
+    """가중치가 작은 간선부터 선택하며 최소 신장 트리의 가중치 합을 구한다."""
+    # 가중치를 기준으로 오름차순 정렬
+    edges.sort(key=lambda x: x[2])
+
     min_cost = 0  # MST의 총 가중치
-    nodes_count = 0  # MST에 포함된 정점의 수
-    pq = [(0, start)]  # 시작 노드 정보
+    edges_count = 0  # MST에 포함된 간선의 수
+    parents = list(range(num_v))  # union-find를 위한 make_set
+    
+    for n1, n2, w in edges:
+        # 사이클이 생긴다면 pass
+        if find_set(parents, n1) == find_set(parents, n2):
+            continue
 
-    while pq:
-        # 종료조건: 정점을 num_v개 뽑으면 MST 완성
-        if nodes_count >= num_v:
+        union(parents, n1, n2)
+        min_cost += w
+        edges_count += 1
+
+        # 간선을 num_v-1개 선택했다면 MST 완성
+        if edges_count == num_v - 1:
             break
 
-        cost, curr_node = heapq.heappop(pq)
-        
-        # 이미 방문했으면 스킵
-        if visited[curr_node]:
-            continue
-        
-        visited[curr_node] = True
-        min_cost += cost
-        nodes_count += 1
-
-        for next_cost, next_node in adj_list[curr_node]:
-            if not visited[next_node]:
-                heapq.heappush(pq, (next_cost, next_node))
-
     return min_cost
-
 
 
 T = int(input())
 for tc in range(1, T+1):
     V, E = map(int, input().split())
     
-    adj_list = [[] for _ in range(V + 1)]
-    for _ in range(E):
-        n1, n2, w = map(int, input().split())
-        adj_list[n1].append((w, n2))
-        adj_list[n2].append((w, n1))
+    edges = [tuple(map(int, input().split())) for _ in range(E)]
+    result = kruskal(V + 1)
 
-    result = prim(V + 1, 0)
     print(f'#{tc} {result}')
