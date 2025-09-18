@@ -11,24 +11,21 @@
 1. 인덱스 포인터 [원형 큐]
     - 한 변에 적힌 숫자의 개수 = N // 4 -> (N//4)회전하면 0회전과 동일
     - 시작 인덱스 = (직전 인덱스 - 1) % N 
-2. 시계방향으로 회전 -> pop, insert(0)
+2. 시계방향으로 회전 -> pop, insert(0)/appendleft
 3. 회전 -> deque.rotate()
 '''
-from collections import deque
 
 
 def get_numbers():
     """만들 수 있는 모든 수를 10진수로 저장한 집합을 반환한다."""
-    dq = deque(passwords)
     numbers = set()  # 만든 숫자를 저장
     side_len = N // 4  # 한 변의 길이
 
     for _ in range(side_len):
-        hex_list = list(dq.copy())
         for idx in range(0, N, side_len):
-            hex_str = ''.join(hex_list[idx:idx+side_len])
+            hex_str = ''.join(passwords[idx:idx+side_len])
             numbers.add(int(hex_str, 16))
-        dq.rotate(1)
+        passwords.insert(0, passwords.pop())
     
     return numbers
 
