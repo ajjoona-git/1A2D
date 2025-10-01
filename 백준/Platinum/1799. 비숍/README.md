@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 32412 KB, 시간: 3988 ms
+메모리: 32412 KB, 시간: 336 ms
 
 ### 분류
 
@@ -12,23 +12,23 @@
 
 ### 제출 일자
 
-2025년 10월 2일 01:23:53
+2025년 10월 2일 01:39:06
 
 ### 문제 설명
 
 <p>서양 장기인 체스에는 대각선 방향으로 움직일 수 있는 비숍(bishop)이 있다. < 그림 1 >과 같은 정사각형 체스판 위에 B라고 표시된 곳에 비숍이 있을 때 비숍은 대각선 방향으로 움직여 O로 표시된 칸에 있는 다른 말을 잡을 수 있다.</p>
 
-<p style="text-align: center;"><img alt="" src="" style="width: 211px; height: 212px;"></p>
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/c3f4ac55-3e37-4bed-a381-7d407b2f9b4f/-/preview/" style="width: 211px; height: 212px;"></p>
 
 <p style="text-align: center;">< 그림 1 ></p>
 
 <p>그런데 체스판 위에는 비숍이 놓일 수 없는 곳이 있다. < 그림 2 >에서 체스판에 색칠된 부분은 비숍이 놓일 수 없다고 하자. 이와 같은 체스판에 서로가 서로를 잡을 수 없도록 하면서 비숍을 놓는다면 < 그림 3 >과 같이 최대 7개의 비숍을 놓을 수 있다.  색칠된 부분에는 비숍이 놓일 수 없지만 지나갈 수는 있다.</p>
 
-<p style="text-align: center;"><img alt="" src="" style="width: 176px; height: 174px;"></p>
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/3d44f5a2-bd28-41bd-9959-0f8f8bfbff3f/-/preview/" style="width: 176px; height: 174px;"></p>
 
 <p style="text-align: center;">< 그림 2 ></p>
 
-<p style="text-align: center;"><img alt="" src="" style="width: 176px; height: 174px;"></p>
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/49405f78-09c9-4220-8687-ec3269dd6c1b/-/preview/" style="width: 176px; height: 174px;"></p>
 
 <p style="text-align: center;">< 그림 3 ></p>
 
